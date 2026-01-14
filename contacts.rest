@@ -1,0 +1,11 @@
+### Local - Get all contacts
+GET http://localhost:3000/contacts
+
+### Local - Get one contact
+GET http://localhost:3000/contacts?id=696807a8b634297b92ee070b
+
+### Render - Get all contacts
+GET https://cse341-contacts-imbx.onrender.com/contacts
+
+### Render - Get one contact
+GET https://cse341-contacts-imbx.onrender.com/contacts?id=696807a8b634297b92ee070b
