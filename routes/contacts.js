@@ -27,6 +27,11 @@ const { ObjectId } = require('mongodb');
 router.get('/', async (req, res) => {
   try {
     const db = req.app.locals.db;
+    if (!db) {
+  return res.status(500).json({ error: 'Database not initialized' });
+}
+
+
     const collection = db.collection('contacts');
 
     // GET one (query parameter ?id=...)
@@ -77,6 +82,11 @@ router.post('/', async (req, res) => {
     }
 
     const db = req.app.locals.db;
+    if (!db) {
+  return res.status(500).json({ error: 'Database not initialized' });
+}
+
+    
     const collection = db.collection('contacts');
 
     const result = await collection.insertOne({
@@ -138,6 +148,11 @@ router.put('/:id', async (req, res) => {
     }
 
     const db = req.app.locals.db;
+    if (!db) {
+  return res.status(500).json({ error: 'Database not initialized' });
+}
+
+    
     const collection = db.collection('contacts');
 
     const result = await collection.updateOne(
@@ -191,6 +206,11 @@ router.delete('/:id', async (req, res) => {
     }
 
     const db = req.app.locals.db;
+    if (!db) {
+  return res.status(500).json({ error: 'Database not initialized' });
+}
+
+    
     const collection = db.collection('contacts');
 
     const result = await collection.deleteOne({ _id: new ObjectId(id) });
