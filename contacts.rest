@@ -2,10 +2,66 @@
 GET http://localhost:3000/contacts
 
 ### Local - Get one contact
-GET http://localhost:3000/contacts?id=696807a8b634297b92ee070b
+GET http://localhost:3000/contacts?id=6971389fc408fafb3e887861
+
 
 ### Render - Get all contacts
 GET https://cse341-contacts-imbx.onrender.com/contacts
 
 ### Render - Get one contact
 GET https://cse341-contacts-imbx.onrender.com/contacts?id=696807a8b634297b92ee070b
+
+### Local - Create contact (POST)
+POST http://localhost:3000/contacts
+Content-Type: application/json
+
+{
+  "firstName": "John",
+  "lastName": "Doe",
+  "email": "john.doe@test.com",
+  "favoriteColor": "Blue",
+  "birthday": "1990-01-01"
+}
+
+### Local - Update contact (PUT)
+PUT http://localhost:3000/contacts/6971389fc408fafb3e887861
+Content-Type: application/json
+
+{
+  "firstName": "John",
+  "lastName": "Doe",
+  "email": "john.updated@test.com",
+  "favoriteColor": "Green",
+  "birthday": "1990-01-01"
+}
+
+### Local - Delete contact (DELETE)
+DELETE http://localhost:3000/contacts/6971389fc408fafb3e887861
+
+
+### Render - Create contact (POST)
+POST https://cse341-contacts-imbx.onrender.com/contacts
+Content-Type: application/json
+
+{
+  "firstName": "John",
+  "lastName": "Doe",
+  "email": "john.doe@test.com",
+  "favoriteColor": "Blue",
+  "birthday": "1990-01-01"
+}
+
+### Render - Update contact (PUT) (replace CONTACT_ID)
+PUT https://cse341-contacts-imbx.onrender.com/contacts/CONTACT_ID
+Content-Type: application/json
+
+{
+  "firstName": "John",
+  "lastName": "Doe",
+  "email": "john.updated@test.com",
+  "favoriteColor": "Green",
+  "birthday": "1990-01-01"
+}
+
+### Render - Delete contact (DELETE) (replace CONTACT_ID)
+DELETE https://cse341-contacts-imbx.onrender.com/contacts/CONTACT_ID
