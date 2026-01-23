@@ -31,7 +31,7 @@ const swaggerDefinition = {
 
 const options = {
   swaggerDefinition,
-  apis: ['./routes/*.js'] // lit les commentaires Swagger dans tes fichiers de routes
+  apis: ['./routes/*.js', './controllers/*.js']
 };
 
 module.exports = swaggerJSDoc(options);

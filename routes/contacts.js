@@ -1,7 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const { ObjectId } = require('mongodb');
 
+const {
+  getContacts,
+  createContact,
+  updateContact,
+  deleteContact
+} = require('../controllers/contactsController');
 
 /**
  * @openapi
@@ -23,33 +28,9 @@ const { ObjectId } = require('mongodb');
  *       500:
  *         description: Server error
  */
+router.get('/', getContacts);
 
-router.get('/', async (req, res) => {
-  try {
-    const db = req.app.locals.db;
-    if (!db) {
-  return res.status(500).json({ error: 'Database not initialized' });
-}
-
-
-    const collection = db.collection('contacts');
-
-    // GET one (query parameter ?id=...)
-    if (req.query.id) {
-      const contact = await collection.findOne({ _id: new ObjectId(req.query.id) });
-      return res.json(contact);
-    }
-
-    // GET all
-    const contacts = await collection.find().toArray();
-    res.json(contacts);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-
-   /**
+/**
  * @openapi
  * /contacts:
  *   post:
@@ -70,38 +51,7 @@ router.get('/', async (req, res) => {
  *       500:
  *         description: Server error
  */
-
-
-
-router.post('/', async (req, res) => {
-  try {
-    const { firstName, lastName, email, favoriteColor, birthday } = req.body;
-
-    if (!firstName || !lastName || !email || !favoriteColor || !birthday) {
-      return res.status(400).json({ message: 'All fields are required.' });
-    }
-
-    const db = req.app.locals.db;
-    if (!db) {
-  return res.status(500).json({ error: 'Database not initialized' });
-}
-
-    
-    const collection = db.collection('contacts');
-
-    const result = await collection.insertOne({
-      firstName,
-      lastName,
-      email,
-      favoriteColor,
-      birthday
-    });
-
-    res.status(201).json({ id: result.insertedId });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
+router.post('/', createContact);
 
 /**
  * @openapi
@@ -133,44 +83,7 @@ router.post('/', async (req, res) => {
  *       500:
  *         description: Server error
  */
-
-router.put('/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { firstName, lastName, email, favoriteColor, birthday } = req.body;
-
-    if (!ObjectId.isValid(id)) {
-      return res.status(400).json({ message: 'Invalid id.' });
-    }
-
-    if (!firstName || !lastName || !email || !favoriteColor || !birthday) {
-      return res.status(400).json({ message: 'All fields are required.' });
-    }
-
-    const db = req.app.locals.db;
-    if (!db) {
-  return res.status(500).json({ error: 'Database not initialized' });
-}
-
-    
-    const collection = db.collection('contacts');
-
-    const result = await collection.updateOne(
-      { _id: new ObjectId(id) },
-      {
-        $set: { firstName, lastName, email, favoriteColor, birthday }
-      }
-    );
-
-    if (result.matchedCount === 0) {
-      return res.status(404).json({ message: 'Contact not found.' });
-    }
-
-    res.sendStatus(204);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
+router.put('/:id', updateContact);
 
 /**
  * @openapi
@@ -196,33 +109,7 @@ router.put('/:id', async (req, res) => {
  *       500:
  *         description: Server error
  */
+router.delete('/:id', deleteContact);
 
-router.delete('/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
-
-    if (!ObjectId.isValid(id)) {
-      return res.status(400).json({ message: 'Invalid id.' });
-    }
-
-    const db = req.app.locals.db;
-    if (!db) {
-  return res.status(500).json({ error: 'Database not initialized' });
-}
-
-    
-    const collection = db.collection('contacts');
-
-    const result = await collection.deleteOne({ _id: new ObjectId(id) });
-
-    if (result.deletedCount === 0) {
-      return res.status(404).json({ message: 'Contact not found.' });
-    }
-
-    res.sendStatus(204);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
 
 module.exports = router;
